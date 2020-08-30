@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Parcel Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <div id="cart" class="cart">
+      <h3 class="cart__title">Корзина</h3>
+      <ul class="cart__list"></ul>
+      <h4 class="cart__sum"></h4>
+    </div>
+
+    <br /><br />
+
+    <div id="catalog" class="catalog">
+      <h3 class="catalog__title">Каталог</h3>
+      <ul class="catalog__list">
+        <li class="catalog__item-wrap">
+          <a
+            href="#"
+            class="catalog__item"
+            data-id="0"
+            data-name="Товар 1"
+            data-price="5"
+          >
+            Товар 1 - 5$
+          </a>
+        </li>
+        <li class="catalog__item-wrap">
+          <a
+            href="#"
+            class="catalog__item"
+            data-id="1"
+            data-name="Товар 2"
+            data-price="7"
+          >
+            Товар 2 - 7$
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <script src="src/index.js" defer></script>
+  </body>
+</html>

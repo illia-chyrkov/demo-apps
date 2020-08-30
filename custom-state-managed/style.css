@@ -1,0 +1,57 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.btn {
+    display: inline-block;
+    border: 0;
+    border-radius: 0;
+    background: #9B59B6;
+    padding: 5px 10px;
+    font-size: 14px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.cart {
+    padding: 15px;
+    background: #8E44AD;
+    color: #fff;
+}
+
+.cart__item {
+    padding: 10px 0;
+}
+
+.cart__item p {
+    margin: 5px 0;
+}
+
+.catalog {
+    display: flex;
+    justify-content: space-around;
+    padding: 50px;
+}
+
+.catalog__item {
+    padding: 50px 15px;
+    background: #8E44AD;
+    color: #fff;
+    width: 15%;
+    text-align: center;
+}
+
+.catalog__item-title {
+    margin-top: 0;
+}

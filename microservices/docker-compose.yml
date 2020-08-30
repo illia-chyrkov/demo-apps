@@ -1,0 +1,60 @@
+version: '3'
+services:
+  api-gateway:
+    build: ./api-gateway
+    restart: on-failure
+    ports:
+      - "3000:80"
+    depends_on:
+      - "app"
+      - "auth"
+      - "optimization"
+    volumes:
+      - "./api-gateway/public:/usr/src/app/public"
+  app:
+    build: ./app
+    depends_on:
+      - "cache-database"
+      - "app-database"
+  auth:
+    build: ./auth
+    depends_on:
+      - "auth-database"
+  optimization:
+    build: ./optimization
+    restart: on-failure
+    depends_on:
+      - "file-storage"
+      - "message-broker"
+    logging:
+      driver: none
+  cache-database:
+    image: "redis:alpine"
+    logging:
+      driver: none
+  auth-database:
+    image: "postgres:alpine"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: auth
+    logging:
+      driver: none
+  app-database:
+    image: "mongo:latest"
+    logging:
+      driver: none
+  file-storage:
+    image: "minio/minio:latest"
+    environment:
+      MINIO_ACCESS_KEY: root
+      MINIO_SECRET_KEY: password
+    command: server /data
+    ports:
+      - "9000:9000"
+    logging:
+      driver: none
+  message-broker:
+    image: "rabbitmq:latest"
+    logging:
+      driver: none

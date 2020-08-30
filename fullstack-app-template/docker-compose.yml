@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  server:
+    container_name: fullstack-app-server
+    build:
+      context: .
+      dockerfile: ./dockerfiles/server/Dockerfile
+    restart: always
+  client:
+    container_name: fullstack-app-client
+    build:
+      context: .
+      dockerfile: ./dockerfiles/client/Dockerfile
+    restart: always
+    ports:
+      - "80:80"

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<title>Language checker - RU/UA</title>
+</head>
+<body>
+	<link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,700&amp;subset=cyrillic" rel="stylesheet">
+	<style>
+		body,
+		input,
+		button,
+		textarea {
+			font-family: 'Noto Sans', sans-serif;
+		}
+
+		.header__toggle {
+			display: flex;
+			-webkit-justify-content: center;
+			        justify-content: center;
+		}
+
+		.header__link {
+			display: inline-block;
+			padding: 10px;
+			border: 2px solid #2980B9;
+			margin: 0;
+			color: #2980B9;
+			text-decoration: none;
+			font-size: 12px;
+			text-transform: uppercase;
+			font-weight: bold;
+			transition: .2s ease-in-out;
+		}
+
+		.header__link:hover {
+			color: #fff;
+			background: #3498DB;
+		}
+
+		.header__link.active {
+			color: #fff;
+			background: #2980B9;
+		}
+
+		.header__link:first-child {
+			border-right: 0;
+		}
+
+		.page__input {
+			display: block;
+			margin: 20vh auto 20px;
+			max-width: 300px;
+			width: 100%;
+			padding: 10px;
+			border: 1px solid #ECF0F1;
+			outline: none;
+		}
+
+		.page__button {
+			display: block;
+			margin: 20px auto;
+			max-width: 140px;
+			width: 100%;
+			border: 0;
+			padding: 10px;
+			text-decoration: none;
+			font-size: 12px;
+			text-transform: uppercase;
+			font-weight: bold;
+			transition: .2s ease-in-out;
+			color: #fff;
+			background: #2980B9;
+		}
+
+		.page__button:hover {
+			color: #fff;
+			background: #3498DB;
+		}
+
+		.page__result {
+			display: block;
+			text-align: center;
+			font-size: 16px;
+			color: #2C3E50;
+			margin: 20px 0 10px;
+		}
+
+		.page__other-result {
+			display: block;
+			text-align: center;
+			font-size: 14px;
+			color: #7F8C8D;
+			margin: 10px 0;
+		}
+	</style>
+	<header class="header">
+		<div class="header__toggle">
+			<a href="/" class="header__link active">RU/UA</a>
+			<a href="/multy.html" class="header__link">40 Languages</a>
+		</div>
+	</header>
+	<form action="#" class="page">
+		<input type="text" class="page__input" placeholder="Enter the word" maxlength="20">
+		<button class="page__button">Check</button>
+		<span class="page__result"></span>
+	</form>
+	<script src="https://cdn.rawgit.com/BrainJS/brain.js/master/browser.js"></script>
+	<script src="https://unpkg.com/jquery"></script>
+	<script>
+		var net = new brain.NeuralNetwork()
+		$.getJSON('networks/pair.json', function(json){
+			net.fromJSON(json)
+		})
+
+		$('.page').submit(function(e){
+			e.preventDefault()
+			$('.page__result').html('This word is most likely in ' + run($('.page__input').val().toLowerCase()))
+		})
+
+		function strToBin(input) {
+			// 20 символов по 12 битов
+			const symbols = 20
+			const bytes = 12
+
+			if (input.length > symbols) return fillNulls([], symbols * bytes)
+			
+			input = input.split('').reduce((arr, i) => {
+				return [...arr, ...fillNulls(i.charCodeAt().toString(2).split('').map(i => +i), bytes)]
+			}, [])
+
+			input = fillNulls(input, symbols * bytes)
+			// .map(i => i.charCodeAt(0)/65536*10)
+
+			if (input.length === symbols * bytes) return input
+			else return fillNulls([], symbols * bytes)
+		}
+
+		function fillNulls(array, count) {
+			if (array.length >= count) return array
+			else return [...Array(count - array.length + 1).join('0').split('').map(i => +i), ...array]
+		}
+
+		function run(input) {
+			return net.run(strToBin(input)) > 0.5 ? 'Russian' : 'Ukrainian'
+		}
+	</script>
+</body>
+</html>

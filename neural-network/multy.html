@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<title>Language checker - 40 languages</title>
+</head>
+<body>
+	<link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,700&amp;subset=cyrillic" rel="stylesheet">
+	<style>
+		body,
+		input,
+		button,
+		textarea {
+			font-family: 'Noto Sans', sans-serif;
+		}
+
+		.header__toggle {
+			display: flex;
+			-webkit-justify-content: center;
+			        justify-content: center;
+		}
+
+		.header__link {
+			display: inline-block;
+			padding: 10px;
+			border: 2px solid #2980B9;
+			margin: 0;
+			color: #2980B9;
+			text-decoration: none;
+			font-size: 12px;
+			text-transform: uppercase;
+			font-weight: bold;
+			transition: .2s ease-in-out;
+		}
+
+		.header__link:hover {
+			color: #fff;
+			background: #3498DB;
+		}
+
+		.header__link.active {
+			color: #fff;
+			background: #2980B9;
+		}
+
+		.header__link:first-child {
+			border-right: 0;
+		}
+
+		.page__input {
+			display: block;
+			margin: 20vh auto 20px;
+			max-width: 300px;
+			width: 100%;
+			padding: 10px;
+			border: 1px solid #ECF0F1;
+			outline: none;
+		}
+
+		.page__button {
+			display: block;
+			margin: 20px auto;
+			max-width: 140px;
+			width: 100%;
+			border: 0;
+			padding: 10px;
+			text-decoration: none;
+			font-size: 12px;
+			text-transform: uppercase;
+			font-weight: bold;
+			transition: .2s ease-in-out;
+			color: #fff;
+			background: #2980B9;
+		}
+
+		.page__button:hover {
+			color: #fff;
+			background: #3498DB;
+		}
+
+		.page__result {
+			display: block;
+			text-align: center;
+			font-size: 16px;
+			color: #2C3E50;
+			margin: 20px 0 10px;
+		}
+
+		.page__other-result {
+			display: block;
+			text-align: center;
+			font-size: 14px;
+			color: #7F8C8D;
+			margin: 10px 0;
+		}
+	</style>
+	<header class="header">
+		<div class="header__toggle">
+			<a href="/" class="header__link">RU/UA</a>
+			<a href="/multy.html" class="header__link active">40 Languages</a>
+		</div>
+	</header>
+	<form action="#" class="page">
+		<input type="text" class="page__input" placeholder="Enter the word" maxlength="20">
+		<button class="page__button">Check</button>
+		<span class="page__result"></span>
+		<span class="page__other-result"></span>
+	</form>
+	<script src="https://cdn.rawgit.com/BrainJS/brain.js/master/browser.js"></script>
+	<script src="https://unpkg.com/jquery"></script>
+	<script>
+		var net = new brain.NeuralNetwork()
+		var languages = []
+
+		$.getJSON('networks/multy.json', function(json) {
+			net.fromJSON(json)
+		})
+
+		$.getJSON('languages.json', function(json) {
+			languages = json
+		})
+
+		$('.page').submit(function(e){
+			e.preventDefault()
+
+			var result = run($('.page__input').val().toLowerCase())
+			$('.page__result').html('This word is most likely in ' + result.shift())
+			$('.page__other-result').html('It can also be ' + result.join(', '))
+		})
+
+		function getChars(input) {
+			let output = {}
+
+			input = input.indexOf('/') >= 0 ? input.substring(0, input.indexOf('/')) : input
+			
+			input.split('').forEach(i => {
+				output[i] = 1
+			})
+
+			return output
+		}
+
+		function softmax(output) {
+			var maximum = output.reduce(function(p,c) { return p>c ? p : c; });
+			var nominators = output.map(function(e) { return Math.exp(e - maximum); });
+			var denominator = nominators.reduce(function (p, c) { return p + c; });
+			var softmax = nominators.map(function(e) { return e / denominator; });
+
+			var maxIndex = 0;
+			softmax.reduce(function(p,c,i){if(p<c) {maxIndex=i; return c;} else return p;});
+			var result = [];
+			for (var i=0; i<output.length; i++)
+			{
+				if (i==maxIndex)
+					result.push(1);
+				else
+					result.push(0);
+			}
+			return result;
+		}
+
+		function run(input) {
+			var res = net.run(getChars(input))
+			var data = Object.entries(res).map(function([key, value]){
+				return {key, value}
+			})
+			data.sort(function(a,b){
+				return a.value - b.value
+			})
+			data = data.map(function(i){
+				var res
+				languages.forEach(function(j){
+					if (i.key === j.id) res = j.name
+				})
+				return res
+			})
+			data.splice(5,data.length)
+
+			// let arr = softmax(Object.values(res))
+			// let biggestIntex = 0
+			// arr.forEach((n, i) => {
+			// 	if (n === 1) biggestIntex = i
+			// })
+
+			// let i = 0
+			// for (let key in res) {
+			// 	if (i === biggestIntex) return key
+			// 	i++
+			// }
+
+			return data
+		}
+	</script>
+</body>
+</html>

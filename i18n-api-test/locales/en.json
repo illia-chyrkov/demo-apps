@@ -1,0 +1,7 @@
+{
+    "denied": "Access is denied",
+    "id_not_set": "ID not specified",
+    "message_not_set": "Message not specified",
+    "not_found": "Not found",
+    "error": "Something went wrong"
+}

@@ -1,0 +1,162 @@
+@font-face {
+    font-family: 'nissan';
+    src: url('./fonts/NissanBrand-Bold.woff2') format('woff2'), url('./fonts/NissanBrand-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'nissan';
+    src: url('./fonts/NissanBrand-Light.woff2') format('woff2'), url('./fonts/NissanBrand-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'nissan';
+    src: url('./fonts/NissanBrand-Regular.woff2') format('woff2'), url('./fonts/NissanBrand-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'nissan';
+    src: url('./fonts/NissanBrand-Italic.woff2') format('woff2'), url('./fonts/NissanBrand-Italic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+}
+
+*,
+*::after,
+*::before {
+	margin: 0;
+    padding: 0;
+	-webkit-box-sizing: inherit;
+         box-sizing: inherit;
+}
+
+html {
+	font-size: 62.5%;
+   -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "nissan", Arial, sans-serif;
+    background: #000;
+    color: #fff;
+    max-width: 728px;
+    max-height: 90px;
+    position: relative;
+    overflow: hidden;
+    height: 90px;
+}
+
+#shape-1 {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: url('i/back.jpg');
+    background-size: cover;
+    background-position: 50% 50%;
+    z-index: -2;
+}
+
+#shape-2 {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: 0;
+    left: 10px;
+    background: url('i/logo.png');
+    background-size: contain;
+}
+
+#shape-3,
+#shape-4 {
+    position: absolute;
+    left: 80px;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+#shape-3 {
+    top: 20px;
+}
+
+#shape-4 {
+    top: 35px;
+}
+
+#shape-5 {
+    position: absolute;
+    left: 80px;
+    bottom: 5px;
+    text-transform: uppercase;
+    font-size: 11px;
+}
+
+#shape-6 {
+    width: 200px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    background: url('i/xtrail.png');
+    background-size: cover;
+    background-position: 50% 50%;
+    z-index: -1;
+}
+
+#shape-7 {
+    position: absolute;
+    right: 15px;
+    top: 5px;
+    text-transform: uppercase;
+    font-size: 13px;
+}
+
+#shape-8 {
+    position: absolute;
+    right: 15px;
+    bottom: 35px;
+    text-transform: uppercase;
+    font-size: 12px;
+    text-align: right;
+    line-height: 1;
+}
+
+#shape-8 span {
+    color: #c61633;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+#shape-9 {
+    text-decoration: none;
+    color: #fff;
+    display: inline-block;
+    background: #c61633;
+    padding: 4px 6px;
+    text-transform: uppercase;
+    position: absolute;
+    right: 15px;
+    bottom: 5px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+#shape-10 {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: url('i/discl.png');
+    z-index: -3;
+}
